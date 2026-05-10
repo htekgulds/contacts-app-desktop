@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import PersonnelPage from "./components/PersonnelPage";
 import DepartmentsPage from "./components/DepartmentsPage";
 import UsefulNumbersPage from "./components/UsefulNumbersPage";
+import { useContactsData } from "./hooks/useContactsData";
 import "./App.css";
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
   const [detailPerson, setDetailPerson] = useState(null);
   const [initialDept, setInitialDept] = useState(null);
   const [statusInfo, setStatusInfo] = useState("");
+  const { data, loading } = useContactsData();
 
   const navigate = useCallback((target, deptName) => {
     setPage(target);
@@ -58,22 +60,45 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, [detailPerson, closeDetail]);
 
+  if (loading) {
+    return (
+      <div className="app-loading">
+        <div className="spinner"></div>
+        <p>Loading contacts...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <Topbar currentPage={page} onNavigate={navigate} />
       {page === "home" && (
-        <HomePage onOpenPerson={openPerson} onNavigate={navigate} />
+        <HomePage
+          personnel={data.personnel}
+          departments={data.departments}
+          usefulNumbers={data.useful_numbers}
+          onOpenPerson={openPerson}
+          onNavigate={navigate}
+        />
       )}
       {page === "personnel" && (
-        <PersonnelPage onOpenPerson={openPerson} onNavigate={navigate} />
+        <PersonnelPage
+          personnel={data.personnel}
+          onOpenPerson={openPerson}
+          onNavigate={navigate}
+        />
       )}
       {page === "departments" && (
         <DepartmentsPage
+          personnel={data.personnel}
+          departments={data.departments}
           initialDept={initialDept}
           onOpenPerson={openPerson}
         />
       )}
-      {page === "useful" && <UsefulNumbersPage />}
+      {page === "useful" && (
+        <UsefulNumbersPage usefulNumbers={data.useful_numbers} />
+      )}
       <DetailPanel person={detailPerson} onClose={closeDetail} />
       <Statusbar currentPage={page} info={statusInfo} />
     </>

@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from "react";
-import { personnel, departments } from "../data/contacts";
 
 function escHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -18,7 +17,7 @@ function hl(text, q) {
   );
 }
 
-export default function DepartmentsPage({ initialDept, onOpenPerson }) {
+export default function DepartmentsPage({ personnel, departments, initialDept, onOpenPerson }) {
   const [query, setQuery] = useState("");
   const [selectedDept, setSelectedDept] = useState(initialDept || null);
 

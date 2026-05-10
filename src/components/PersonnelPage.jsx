@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { personnel } from "../data/contacts";
 
 function escHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -18,7 +17,7 @@ function hl(text, q) {
   );
 }
 
-export default function PersonnelPage({ onOpenPerson, onNavigate }) {
+export default function PersonnelPage({ personnel, onOpenPerson, onNavigate }) {
   const [query, setQuery] = useState("");
   const [sortField, setSortField] = useState("name");
   const [sortDir, setSortDir] = useState(1);

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { usefulNumbers, catColors } from "../data/contacts";
+import { catColors } from "../data/contacts";
 
 function escHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -18,7 +18,7 @@ function hl(text, q) {
   );
 }
 
-export default function UsefulNumbersPage() {
+export default function UsefulNumbersPage({ usefulNumbers }) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {

@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { personnel, departments, usefulNumbers } from "../data/contacts";
 
 function escHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -27,7 +26,7 @@ function initials(name) {
     .toUpperCase();
 }
 
-export default function HomePage({ onOpenPerson, onNavigate }) {
+export default function HomePage({ personnel, departments, usefulNumbers, onOpenPerson, onNavigate }) {
   const [query, setQuery] = useState("");
   const [focusIdx, setFocusIdx] = useState(-1);
   const inputRef = useRef(null);
