@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import Topbar from "./components/Topbar";
 import Statusbar from "./components/Statusbar";
 import DetailPanel from "./components/DetailPanel";
@@ -6,17 +7,35 @@ import HomePage from "./components/HomePage";
 import PersonnelPage from "./components/PersonnelPage";
 import DepartmentsPage from "./components/DepartmentsPage";
 import UsefulNumbersPage from "./components/UsefulNumbersPage";
+import SetupPage from "./components/SetupPage";
 import { useContactsData } from "./hooks/useContactsData";
 import "./App.css";
 
 export default function App() {
+  const [configChecked, setConfigChecked] = useState(false);
+  const [configReady, setConfigReady] = useState(false);
   const [page, setPage] = useState("home");
   const [detailPerson, setDetailPerson] = useState(null);
   const [initialDept, setInitialDept] = useState(null);
   const [statusInfo, setStatusInfo] = useState("");
-  const { data, loading, error } = useContactsData();
+
+  useEffect(() => {
+    console.log("[App] Checking config...");
+    invoke("check_config").then((ok) => {
+      console.log("[App] Config exists:", ok);
+      setConfigReady(ok);
+      setConfigChecked(true);
+    });
+  }, []);
+
+  const { data, loading, error } = useContactsData(configReady);
+
+  useEffect(() => {
+    console.log("[App] State:", { configChecked, configReady, loading, error, hasData: !!data });
+  }, [configChecked, configReady, loading, error, data]);
 
   const navigate = useCallback((target, deptName) => {
+    console.log("[App] Navigate:", target, deptName);
     setPage(target);
     if (deptName) {
       setInitialDept(deptName);
@@ -26,10 +45,12 @@ export default function App() {
   }, []);
 
   const openPerson = useCallback((p) => {
+    console.log("[App] Open person:", p?.name);
     setDetailPerson(p);
   }, []);
 
   const closeDetail = useCallback(() => {
+    console.log("[App] Close detail");
     setDetailPerson(null);
   }, []);
 
@@ -60,16 +81,30 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, [detailPerson, closeDetail]);
 
-  if (loading) {
+  if (!configChecked) {
+    console.log("[App] Render: checking config");
     return (
       <div className="app-loading">
         <div className="spinner"></div>
-        <p>Loading contacts...</p>
+        <p>Checking configuration...</p>
       </div>
     );
   }
 
+  if (!configReady) {
+    console.log("[App] Render: setup page");
+    return (
+      <SetupPage
+        onConfigured={() => {
+          console.log("[App] Config saved, proceeding...");
+          setConfigReady(true);
+        }}
+      />
+    );
+  }
+
   if (error) {
+    console.log("[App] Render: error state");
     return (
       <div className="app-error">
         <h2>Failed to load data</h2>
@@ -80,6 +115,17 @@ export default function App() {
     );
   }
 
+  if (loading || !data) {
+    console.log("[App] Render: loading data", { loading, hasData: !!data });
+    return (
+      <div className="app-loading">
+        <div className="spinner"></div>
+        <p>Loading contacts...</p>
+      </div>
+    );
+  }
+
+  console.log("[App] Render: main app, page:", page);
   return (
     <>
       <Topbar currentPage={page} onNavigate={navigate} />

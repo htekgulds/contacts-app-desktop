@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
-export function useContactsData() {
+export function useContactsData(shouldFetch) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!shouldFetch) return;
+    setLoading(true);
     async function fetchData() {
       try {
         const result = await invoke("get_all_data");
@@ -19,7 +21,7 @@ export function useContactsData() {
       }
     }
     fetchData();
-  }, []);
+  }, [shouldFetch]);
 
   return { data, loading, error };
 }

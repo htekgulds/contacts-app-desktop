@@ -37,6 +37,16 @@ pub struct AppData {
     useful_numbers: Vec<UsefulNumber>,
 }
 
+#[tauri::command]
+fn check_config() -> bool {
+    config::exists()
+}
+
+#[tauri::command]
+fn save_config(url: String) -> Result<(), String> {
+    config::save(&url)
+}
+
 async fn fetch_from_server<T: for<'de> Deserialize<'de>>(endpoint: &str) -> Result<T, String> {
     let cfg = config::load();
     let client = reqwest::Client::new();
@@ -76,6 +86,8 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
+            check_config,
+            save_config,
             get_personnel,
             get_departments,
             get_useful_numbers,
