@@ -109,8 +109,8 @@ export default function App() {
       <div className="app-error">
         <h2>Failed to load data</h2>
         <p>{error}</p>
-        <p>Make sure the API server is running:</p>
-        <pre>node server/server.js</pre>
+        <p>Cannot reach the remote server at the configured URL.</p>
+        <p>Check the URL in the config file or restart the app to reconfigure.</p>
       </div>
     );
   }
