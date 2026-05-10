@@ -3,27 +3,27 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0d0f0e;
-  --bg2: #111413;
-  --bg3: #161918;
-  --bg4: #1c1f1e;
-  --surface: #202423;
-  --border: #2a2e2c;
-  --border2: #333836;
-  --text: #c8ceca;
-  --text2: #7a8480;
-  --text3: #4a524f;
-  --accent: #4ade80;
-  --accent2: #22c55e;
-  --accent3: #16a34a;
-  --accent-dim: rgba(74,222,128,0.08);
-  --accent-dim2: rgba(74,222,128,0.15);
-  --amber: #fbbf24;
-  --amber-dim: rgba(251,191,36,0.08);
-  --teal: #2dd4bf;
-  --teal-dim: rgba(45,212,191,0.08);
-  --red: #f87171;
-  --red-dim: rgba(248,113,113,0.08);
+  --bg: #0d0d0d;
+  --bg2: #111111;
+  --bg3: #161616;
+  --bg4: #1c1c1c;
+  --surface: #202020;
+  --border: #2a2a2a;
+  --border2: #333333;
+  --text: #c8c8c8;
+  --text2: #7a7a7a;
+  --text3: #4a4a4a;
+  --accent: #d4d4d4;
+  --accent2: #b0b0b0;
+  --accent3: #808080;
+  --accent-dim: rgba(255,255,255,0.06);
+  --accent-dim2: rgba(255,255,255,0.10);
+  --amber: #b0b0b0;
+  --amber-dim: rgba(255,255,255,0.06);
+  --teal: #9a9a9a;
+  --teal-dim: rgba(255,255,255,0.05);
+  --red: #c0c0c0;
+  --red-dim: rgba(255,255,255,0.06);
   --mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
 }
 
@@ -394,8 +394,8 @@ body::after {
 }
 
 .ri-person { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent3); }
-.ri-dept { background: var(--teal-dim); color: var(--teal); border: 1px solid #0d9488; }
-.ri-useful { background: var(--amber-dim); color: var(--amber); border: 1px solid #b45309; }
+.ri-dept { background: var(--teal-dim); color: var(--teal); border: 1px solid var(--border2); }
+.ri-useful { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--border2); }
 
 .result-main { flex: 1; min-width: 0; }
 .result-name { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -570,7 +570,7 @@ tr.selected td { background: var(--accent-dim); }
   border-bottom: 1px dashed rgba(45,212,191,0.4);
   transition: color 0.1s, border-color 0.1s;
 }
-.td-dept-link:hover { color: #5eead4; border-bottom-color: var(--teal); }
+.td-dept-link:hover { color: #c0c0c0; border-bottom-color: var(--teal); }
 .td-phone { color: var(--amber); font-size: 11px; font-weight: 300; }
 .td-room { color: var(--text2); }
 .td-floor {
