@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+mod config;
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Person {
     name: String,
@@ -35,11 +37,10 @@ pub struct AppData {
     useful_numbers: Vec<UsefulNumber>,
 }
 
-const API_BASE: &str = "http://localhost:3001/api";
-
 async fn fetch_from_server<T: for<'de> Deserialize<'de>>(endpoint: &str) -> Result<T, String> {
+    let cfg = config::load();
     let client = reqwest::Client::new();
-    let url = format!("{}/{}", API_BASE, endpoint);
+    let url = format!("{}/{}", cfg.api_base_url, endpoint);
     client
         .get(&url)
         .send()
