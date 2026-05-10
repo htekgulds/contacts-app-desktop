@@ -123,3 +123,7 @@ The bundled app will be placed in `src-tauri/target/release/bundle/`.
 │       └── config.rs       # Config file read/write
 └── package.json
 ```
+
+---
+
+> This application was written entirely by AI using [OpenCode](https://opencode.ai) with the model `opencode/big-pickle`.
