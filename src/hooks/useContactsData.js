@@ -12,7 +12,8 @@ export function useContactsData() {
         const result = await invoke("get_all_data");
         setData(result);
       } catch (err) {
-        setError(err);
+        console.error("Failed to fetch data:", err);
+        setError(err.toString());
       } finally {
         setLoading(false);
       }

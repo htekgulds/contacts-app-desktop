@@ -14,7 +14,7 @@ export default function App() {
   const [detailPerson, setDetailPerson] = useState(null);
   const [initialDept, setInitialDept] = useState(null);
   const [statusInfo, setStatusInfo] = useState("");
-  const { data, loading } = useContactsData();
+  const { data, loading, error } = useContactsData();
 
   const navigate = useCallback((target, deptName) => {
     setPage(target);
@@ -65,6 +65,17 @@ export default function App() {
       <div className="app-loading">
         <div className="spinner"></div>
         <p>Loading contacts...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="app-error">
+        <h2>Failed to load data</h2>
+        <p>{error}</p>
+        <p>Make sure the API server is running:</p>
+        <pre>node server/server.js</pre>
       </div>
     );
   }

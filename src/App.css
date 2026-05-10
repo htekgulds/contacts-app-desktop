@@ -27,6 +27,49 @@
   --mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
 }
 
+.app-loading, .app-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: var(--mono);
+  color: var(--text);
+  text-align: center;
+  padding: 20px;
+}
+
+.app-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.app-error {
+  background: var(--bg2);
+}
+
+.app-error h2 {
+  color: var(--red);
+  margin-bottom: 12px;
+}
+
+.app-error pre {
+  background: var(--bg3);
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
 html, body, #root {
   height: 100%;
 }
