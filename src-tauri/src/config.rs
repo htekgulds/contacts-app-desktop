@@ -5,12 +5,14 @@ use std::path::PathBuf;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppConfig {
     pub api_base_url: String,
+    pub data_endpoint: String,
 }
 
 impl Default for AppConfig {
     fn default() -> Self {
         AppConfig {
             api_base_url: "http://localhost:3001/api".into(),
+            data_endpoint: "data".into(),
         }
     }
 }
@@ -31,15 +33,16 @@ pub fn exists() -> bool {
     }
     if let Ok(content) = fs::read_to_string(&path) {
         if let Ok(cfg) = serde_json::from_str::<AppConfig>(&content) {
-            return !cfg.api_base_url.is_empty();
+            return !cfg.api_base_url.is_empty() && !cfg.data_endpoint.is_empty();
         }
     }
     false
 }
 
-pub fn save(api_base_url: &str) -> Result<(), String> {
+pub fn save(api_base_url: &str, data_endpoint: &str) -> Result<(), String> {
     let cfg = AppConfig {
         api_base_url: api_base_url.to_string(),
+        data_endpoint: data_endpoint.to_string(),
     };
     fs::create_dir_all(config_dir()).map_err(|e| e.to_string())?;
     let json = serde_json::to_string_pretty(&cfg).map_err(|e| e.to_string())?;

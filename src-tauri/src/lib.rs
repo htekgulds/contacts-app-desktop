@@ -43,8 +43,8 @@ fn check_config() -> bool {
 }
 
 #[tauri::command]
-fn save_config(url: String) -> Result<(), String> {
-    config::save(&url)
+fn save_config(url: String, endpoint: String) -> Result<(), String> {
+    config::save(&url, &endpoint)
 }
 
 async fn fetch_from_server<T: for<'de> Deserialize<'de>>(endpoint: &str) -> Result<T, String> {
@@ -68,7 +68,8 @@ async fn get_useful_numbers() -> Result<Vec<UsefulNumber>, String> {
 
 #[tauri::command]
 async fn get_all_data() -> Result<AppData, String> {
-    fetch_from_server("data").await
+    let endpoint = config::load().data_endpoint;
+    fetch_from_server(&endpoint).await
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
