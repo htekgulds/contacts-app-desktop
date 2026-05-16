@@ -62,16 +62,6 @@ async fn fetch_from_server<T: for<'de> Deserialize<'de>>(endpoint: &str) -> Resu
 }
 
 #[tauri::command]
-async fn get_personnel() -> Result<Vec<Person>, String> {
-    fetch_from_server("personnel").await
-}
-
-#[tauri::command]
-async fn get_departments() -> Result<Vec<Department>, String> {
-    fetch_from_server("departments").await
-}
-
-#[tauri::command]
 async fn get_useful_numbers() -> Result<Vec<UsefulNumber>, String> {
     fetch_from_server("useful-numbers").await
 }
@@ -88,8 +78,6 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             check_config,
             save_config,
-            get_personnel,
-            get_departments,
             get_useful_numbers,
             get_all_data
         ])
