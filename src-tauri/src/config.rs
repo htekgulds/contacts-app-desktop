@@ -1,11 +1,16 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
+
+pub type FieldMapping = HashMap<String, HashMap<String, String>>;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AppConfig {
     pub api_base_url: String,
     pub data_endpoint: String,
+    #[serde(default)]
+    pub field_mappings: FieldMapping,
 }
 
 impl Default for AppConfig {
@@ -13,6 +18,7 @@ impl Default for AppConfig {
         AppConfig {
             api_base_url: "http://localhost:3001/api".into(),
             data_endpoint: "data".into(),
+            field_mappings: HashMap::new(),
         }
     }
 }
@@ -40,10 +46,9 @@ pub fn exists() -> bool {
 }
 
 pub fn save(api_base_url: &str, data_endpoint: &str) -> Result<(), String> {
-    let cfg = AppConfig {
-        api_base_url: api_base_url.to_string(),
-        data_endpoint: data_endpoint.to_string(),
-    };
+    let mut cfg = load();
+    cfg.api_base_url = api_base_url.to_string();
+    cfg.data_endpoint = data_endpoint.to_string();
     fs::create_dir_all(config_dir()).map_err(|e| e.to_string())?;
     let json = serde_json::to_string_pretty(&cfg).map_err(|e| e.to_string())?;
     fs::write(config_path(), json).map_err(|e| e.to_string())
